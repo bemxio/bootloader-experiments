@@ -11,5 +11,4 @@ loop:
     jmp loop
 
 times 510 - ($ - $$) db 0 ; pad to 510 bytes
-
 dw 0xaa55 ; magic signature
