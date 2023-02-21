@@ -7,6 +7,9 @@ QEMU = qemu-system-i386.exe
 SRC_DIR = src
 BUILD_DIR = build
 
+SOURCES = $(wildcard $(SRC_DIR)/*.asm)
+BUILDS = $(patsubst $(SRC_DIR)/%.asm,$(BUILD_DIR)/%.bin,$(SOURCES))
+
 # special targets
 .PRECIOUS: $(BUILD_DIR)/%.bin # don't delete build binaries
 
@@ -20,8 +23,7 @@ $(BUILD_DIR)/%.bin: $(SRC_DIR)/%.asm
 	$(AS) $(ASFLAGS) $^ -o $@
 
 # targets
-all: $(wildcard $(SRC_DIR)/*.asm)
-	$(MAKE) $(notdir $^)
+all: $(BUILDS)
 
 clean:
 	rm -rf $(BUILD_DIR)
