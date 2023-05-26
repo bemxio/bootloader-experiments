@@ -1,5 +1,8 @@
 # Binary files
 *.bin
 
+# Memory dump files
+*.mem
+
 # Build directory
 build/
