@@ -2,7 +2,7 @@
 AS = nasm
 ASFLAGS = -f bin
 
-QEMU = qemu-system-i386.exe
+QEMU = qemu-system-i386
 
 SRC_DIR = src
 BUILD_DIR = build
