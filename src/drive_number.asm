@@ -1,7 +1,7 @@
 [bits 16] ; set the code to 16-bit mode
 [org 0x7c00] ; set the global offset (0x7c00 is where the BIOS loads the bootloader)
 
-mov cl, 0x1d ; load the value to convert to hex
+mov cl, dl ; load the drive number to print
 call print_hex ; call the print_hex function
 
 jmp $ ; loop forever
