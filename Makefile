@@ -3,6 +3,7 @@ AS = nasm
 ASFLAGS = -f bin
 
 QEMU = qemu-system-i386
+QEMUFLAGS = -accel kvm -audiodev alsa,id=snd0 -machine pcspk-audiodev=snd0
 
 SRC_DIR = src
 BUILD_DIR = build
@@ -15,7 +16,7 @@ BUILDS = $(patsubst $(SRC_DIR)/%.asm,$(BUILD_DIR)/%.bin,$(SOURCES))
 
 # rules
 %.asm: $(BUILD_DIR)/%.bin
-	$(QEMU) -drive format=raw,file=$^
+	$(QEMU) $(QEMUFLAGS) -drive format=raw,file=$^
 
 $(BUILD_DIR)/%.bin: $(SRC_DIR)/%.asm
 	mkdir -p $(BUILD_DIR)
