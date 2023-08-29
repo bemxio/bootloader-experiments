@@ -15,24 +15,20 @@ call print ; print the contents of the buffer
 jmp $ ; loop forever
 
 ; disk reading functions
-DISK_ADDRESS_PACKET:
-    db 0x10     ; size of the packet, 16 bytes by default
-    db 0x00     ; unused, should always be 0
-
-    dw 0x01     ; number of sectors to read
-    dw 0x1000   ; pointer to the buffer
-    dw 0x00     ; page number, 0 by default
-
-    dd 0x01     ; offset of the sector to read (lower 32-bits)
-    dd 0x00     ; unused here (upper 32-bits)
-
 read_sector:
-    mov ah, 0x42 ; 'Extended Read Sectors From Drive' function
-    mov si, DISK_ADDRESS_PACKET ; load the address of the packet
+    pusha ; save all of the registers to the stack
 
-    int 0x13 ; BIOS interrupt
-    jc disk_error ; if carry flag is set, an error occurred
+    mov ah, 0x02 ; 'Read Sectors Into Memory' function
+    mov al, 0x01 ; set the sector amount into the register
 
+    mov cl, 0x02 ; sector (0x02 is the first 'available' sector)
+    mov ch, 0x00 ; cylinder (from 0x0 to 0x3FF)
+    mov dh, 0x00 ; head number (from 0x0 to 0xF)
+
+    int 0x13 ; call the BIOS interrupt
+    jc disk_error ; if the carry flag is set, there was an error
+
+    popa ; restore all of the registers from the stack
     ret ; return to caller
 
 disk_error:
