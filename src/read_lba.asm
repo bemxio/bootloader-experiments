@@ -1,9 +1,10 @@
 [bits 16] ; set the code to 16-bit mode
 [org 0x7c00] ; set the global offset (0x7c00 is where the BIOS loads the bootloader)
 
-mov bx, 0x7e00 ; load the address of the buffer
-;mov dl, 0x00 ; load the drive number
+mov bx, [BUFFER_ADDRESS] ; load the address of the base register
+mov bp, [BUFFER_ADDRESS] ; load the address to the base pointer
 
+;mov dl, 0x00 ; load the drive number
 mov cl, dl ; load the drive number to print
 
 call print_hex ; print the drive number in hex
@@ -16,15 +17,15 @@ jmp $ ; loop forever
 
 ; disk reading functions
 DISK_ADDRESS_PACKET:
-    db 0x10     ; size of the packet, 16 bytes by default
-    db 0x00     ; unused, should always be 0
+    db 0x10 ; size of the packet, 16 bytes by default
+    db 0x00 ; unused, should always be 0
 
-    dw 0x01     ; number of sectors to read
-    dw 0x1000   ; pointer to the buffer
-    dw 0x00     ; page number, 0 by default
+    dw 0x01 ; number of sectors to read
+    BUFFER_ADDRESS: dw 0x7e00 ; pointer to the buffer
+    dw 0x00 ; page number, 0 by default
 
-    dd 0x01     ; offset of the sector to read (lower 32-bits)
-    dd 0x00     ; unused here (upper 32-bits)
+    dd 0x01 ; offset of the sector to read (lower 32-bits)
+    dd 0x00 ; unused here (upper 32-bits)
 
 read_sector:
     mov ah, 0x42 ; 'Extended Read Sectors From Drive' function
@@ -46,23 +47,23 @@ disk_error:
 
     hlt ; halt the system
 
-DISK_ERROR: db "error: disk read failed with code 0x", 0
+DISK_ERROR: db "error: disk read failed with code 0x", 0 ; the error message
 
 ; printing functions
 print:
     pusha ; save registers
 
-    print_start:
-        mov al, [bx] ; move the character at the base address into `al`
+    print_loop:
+        mov al, [bp] ; move the character at the base address into `al`
 
-        cmp al, 0 ; check if the character is a null byte
+        cmp al, 0x00 ; check if the character is a null byte
         je print_end ; if so, jump to `print_end`
 
         mov ah, 0x0e ; change the interrupt mode to "Teletype Output"
         int 0x10 ; call the BIOS interrupt
 
-        inc bx ; increment the base address
-        jmp print_start ; jump back to the start of the loop
+        inc bp ; increment the base address
+        jmp print_loop ; jump back to the start of the loop
     
     print_end:
         popa ; restore registers
