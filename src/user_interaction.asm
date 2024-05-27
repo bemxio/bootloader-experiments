@@ -39,7 +39,7 @@ print:
 
         inc si ; move to the next character
         jmp print_loop ; repeat
-    
+
     print_end:
         popa ; restore registers
         ret ; return from function
@@ -72,7 +72,7 @@ input:
         dec di ; move back one character
         mov byte [di], 0x00 ; null-terminate the string
 
-        mov si, BACKSPACE_HANDLER ; set the base pointer to the backspace handler
+        mov si, INPUT_BACKSPACE_HANDLER ; set the base pointer to the backspace handler
         call print ; call the print function
 
         jmp input_loop ; repeat
@@ -92,12 +92,12 @@ input:
         ret ; return from function
 
 ; various data
+INPUT_BACKSPACE_HANDLER db 0x08, 0x20, 0x08, 0x00
+
 INPUT_PROMPT db "Enter your name: ", 0x00
 INPUT_RESPONSE db "Hello, ", 0x00
 
 INPUT_BUFFER times 64 db 0x00
-
-BACKSPACE_HANDLER db 0x08, 0x20, 0x08, 0x00
 
 ; pad the rest of the sector with null bytes
 times 510 - ($ - $$) db 0

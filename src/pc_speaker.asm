@@ -23,7 +23,8 @@ je $ ; if not, jump to the current address
 mov al, ah ; save the new value
 out 0x61, al ; write the new value to the port
 
-; padding and magic number
-times 510 - ($ - $$) db 0 ; pad the rest of the sector with null bytes
+; pad the rest of the sector with null bytes
+times 510 - ($ - $$) db 0
 
-dw 0xaa55 ; set the magic number
+; set the magic number
+dw 0xaa55

@@ -33,9 +33,9 @@ draw_segment:
         inc cx ; increment the column counter
         inc bl ; increment the iteration counter
 
-        cmp bl, SEGMENT_LENGTH ; compare the iteration counter to the segment length 
+        cmp bl, SEGMENT_LENGTH ; compare the iteration counter to the segment length
         jne draw_segment_loop ; if the iteration counter is not equal, loop back to the beginning
-    
+
     draw_segment_end:
         ret ; return from the function
 
@@ -44,7 +44,7 @@ draw_line:
 
     mov cx, INITIAL_COLUMN ; set the column counter to the initial column
     mov al, INITIAL_COLOR ; set the color value to the initial color
-    
+
     draw_line_loop:
         call draw_segment ; call the draw_segment function
 
@@ -67,5 +67,8 @@ INITIAL_COLOR equ 0x20 ; the initial color value
 
 SEGMENT_LENGTH equ 20 ; the length of each color segment
 
-times 510 - ($ - $$) db 0 ; pad the rest of the sector with null bytes
-dw 0xaa55 ; set the magic number
+; pad the rest of the sector with null bytes
+times 510 - ($ - $$) db 0
+
+; set the magic number
+dw 0xaa55

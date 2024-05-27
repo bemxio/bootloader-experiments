@@ -61,12 +61,12 @@ print:
 
         inc bp ; increment the base address
         jmp print_loop ; jump back to the start of the loop
-    
+
     print_end:
         popa ; restore registers
         ret ; return from the function
 
-print_hex:  
+print_hex:
     pusha ; save all of the registers to the stack
 
     ; convert the high nibble to ASCII character
@@ -103,13 +103,13 @@ print_hex:
 line_break:
     pusha ; save registers
     mov ah, 0x0e ; change the interrupt mode to "Teletype Output"
-    
+
     mov al, 0x0a ; move the line feed character into `al`
     int 0x10 ; call the BIOS interrupt
-    
+
     mov al, 0x0d ; move the carriage return character into `al`
     int 0x10 ; call the BIOS interrupt
-    
+
     popa ; restore registers
     ret ; return from the function
 

@@ -44,7 +44,7 @@ pit_handler:
     iret ; return from the interrupt
 
 ; pad the rest of the sector with null bytes
-times 510 - ($ - $$) db 0 
+times 510 - ($ - $$) db 0
 
 ; set the magic number
 dw 0xaa55

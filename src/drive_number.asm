@@ -6,7 +6,7 @@ call print_hex ; call the print_hex function
 
 jmp $ ; loop forever
 
-print_hex:  
+print_hex:
     pusha ; save all of the registers to the stack
 
     ; convert the high nibble to ASCII character
@@ -40,5 +40,8 @@ print_hex:
 
         ret ; return from the function
 
-times 510 - ($ - $$) db 0 ; pad the rest of the sector with null bytes
-dw 0xaa55 ; set the magic number
+; pad the rest of the sector with null bytes
+times 510 - ($ - $$) db 0
+
+; set the magic number
+dw 0xaa55
