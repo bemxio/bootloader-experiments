@@ -18,10 +18,11 @@ BUILDS = $(patsubst $(SRC_DIR)/%.asm,$(BUILD_DIR)/%.bin,$(SOURCES))
 %.asm: $(BUILD_DIR)/%.bin
 	$(QEMU) $(QEMUFLAGS) -drive format=raw,file=$^
 
-$(BUILD_DIR)/%.bin: $(SRC_DIR)/%.asm
-	mkdir -p $(BUILD_DIR)
-
+$(BUILD_DIR)/%.bin: $(SRC_DIR)/%.asm | $(BUILD_DIR)
 	$(AS) $(ASFLAGS) $^ -o $@
+
+$(BUILD_DIR):
+	mkdir -p $@
 
 # targets
 all: $(BUILDS)
