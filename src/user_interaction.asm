@@ -27,7 +27,7 @@ print:
     pusha ; save registers
 
     mov ah, 0x0e ; set "Teletype Output" mode
-    xor bx, bx ; set page number and foreground color to 0
+    xor bh, bh ; set page number to 0
 
     print_loop:
         mov al, [si] ; move the character from the base pointer to the register
