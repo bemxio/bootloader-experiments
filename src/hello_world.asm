@@ -13,7 +13,7 @@ print:
     xor bh, bh ; set page number to 0
 
     print_loop:
-        mov al, [si] ; move the character from the base pointer to the register
+        mov al, [si] ; move the character from the source index to the register
 
         test al, al ; check if the character is null
         jz print_end ; if so, we're done

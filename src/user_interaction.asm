@@ -2,16 +2,16 @@
 [org 0x7c00] ; set the global offset (0x7c00 is where the BIOS loads the bootloader)
 
 ; user interaction stuff
-mov si, INPUT_PROMPT ; set the base pointer to the input prompt address
+mov si, INPUT_PROMPT ; set the source index to the input prompt address
 call print ; call the print function
 
-mov di, INPUT_BUFFER ; set the base pointer to the buffer
+mov di, INPUT_BUFFER ; set the destination index to the buffer
 call input ; call the input function
 
-mov si, INPUT_RESPONSE ; set the base pointer to the input response address
+mov si, INPUT_RESPONSE ; set the source index to the input response address
 call print ; call the print function
 
-mov si, INPUT_BUFFER ; set the base pointer to the buffer
+mov si, INPUT_BUFFER ; set the source index to the buffer
 call print ; call the print function
 
 ; a little exclamation mark :D
@@ -30,7 +30,7 @@ print:
     xor bh, bh ; set page number to 0
 
     print_loop:
-        mov al, [si] ; move the character from the base pointer to the register
+        mov al, [si] ; move the character from the source index to the register
 
         test al, al ; check if the character is null
         jz print_end ; if so, we're done
@@ -60,7 +60,7 @@ input:
         mov ah, 0x0e ; set "Teletype Output" mode
         int 0x10 ; call the BIOS interrupt
 
-        mov byte [di], al ; move the character to the base pointer
+        mov byte [di], al ; move the character to the source index
         inc di ; move to the next character
 
         jmp input_loop ; repeat
@@ -72,7 +72,7 @@ input:
         dec di ; move back one character
         mov byte [di], 0x00 ; null-terminate the string
 
-        mov si, INPUT_BACKSPACE_HANDLER ; set the base pointer to the backspace handler
+        mov si, INPUT_BACKSPACE_HANDLER ; set the source index to the backspace handler
         call print ; call the print function
 
         jmp input_loop ; repeat
