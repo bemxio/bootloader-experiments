@@ -7,7 +7,7 @@ mov bl, [TEXT_ATTRIBUTE] ; set the attribute byte
 
 call print ; call the print function
 
-mov si, NEWLINE_QUESTION ; set the source index to the message
+mov si, LOREM_IPSUM_2 ; set the source index to the message
 mov bl, [TEXT_ATTRIBUTE] ; set the attribute byte
 
 call print ; call the print function
@@ -65,8 +65,8 @@ print:
         ret ; return from function
 
 ; data segment
-LOREM_IPSUM db "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0x00
-NEWLINE_QUESTION db 0x10, "Do newlines work?", 0x00
+LOREM_IPSUM db "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0x10, 0x10, 0x00
+LOREM_IPSUM_2 db "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", 0x00
 
 TEXT_ATTRIBUTE db 0xf0
 
