@@ -31,15 +31,27 @@ print:
         int 0x10 ; call the BIOS interrupt
 
         mov al, [si] ; move the character from the source index to the register
+        inc si ; move to the next character
 
         test al, al ; check if the character is null
         jz print_end ; if so, we're done
 
+        cmp al, 0x10 ; check if the character is a newline
+        je print_newline ; if so, move to a new line
+
         mov ah, 0x09 ; "Write Character and Attribute at Cursor Position" mode
         int 0x10 ; call the BIOS interrupt
 
-        inc si ; move to the next character
         inc dl ; increment the column counter
+
+        cmp dl, 0x50 ; check if the column counter is at the end of the line
+        je print_newline ; if so, move to a new line
+
+        jmp print_loop ; repeat
+
+    print_newline:
+        xor dl, dl ; reset the column counter
+        inc dh ; increment the row counter
 
         jmp print_loop ; repeat
 
@@ -48,7 +60,7 @@ print:
         ret ; return from function
 
 ; data segment
-MESSAGE db "Hello, world!", 0x00
+MESSAGE db "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0x10, "Do newlines work?", 0x00
 ATTRIBUTE db 0xf0
 
 ; pad the rest of the sector with null bytes
