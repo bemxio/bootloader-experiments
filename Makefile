@@ -14,6 +14,12 @@ BUILDS = $(patsubst $(SRC_DIR)/%.asm,$(BUILD_DIR)/%.bin,$(SOURCES))
 # special targets
 .PRECIOUS: $(BUILD_DIR)/%.bin # don't delete build binaries
 
+# targets
+all: $(BUILDS)
+
+clean:
+	$(RM) -r $(BUILD_DIR)
+
 # rules
 %.asm: $(BUILD_DIR)/%.bin
 	$(QEMU) $(QEMUFLAGS) -drive format=raw,file=$^
@@ -23,9 +29,3 @@ $(BUILD_DIR)/%.bin: $(SRC_DIR)/%.asm | $(BUILD_DIR)
 
 $(BUILD_DIR):
 	mkdir -p $@
-
-# targets
-all: $(BUILDS)
-
-clean:
-	rm -rf $(BUILD_DIR)
